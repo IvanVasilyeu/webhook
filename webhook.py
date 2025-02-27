@@ -1,4 +1,5 @@
 from flask import Flask, request
+import os
 
 app = Flask(__name__)
 
@@ -11,4 +12,5 @@ def webhook():
         return 'EVENT_RECEIVED', 200
 
 if __name__ == '__main__':
-    app.run(port=8080)
+    port = int(os.environ.get('PORT', 8080))  # Use PORT env variable or default to 8080
+    app.run(host='0.0.0.0', port=port)
