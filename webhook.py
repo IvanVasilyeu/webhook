@@ -27,7 +27,7 @@ def handle_events():
 
     # Handle different event types here
 
-    return '', 200
+    return json.dumps(body, indent=2), 200
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))  # Use PORT env variable or default to 8080
