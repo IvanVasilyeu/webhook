@@ -3,13 +3,28 @@ import os
 
 app = Flask(__name__)
 
-@app.route('/webhook', methods=['GET', 'POST'])
-def webhook():
-    if request.method == 'GET':
-        return request.args.get('hub.challenge', ''), 200
-    elif request.method == 'POST':
-        print(request.json)
-        return 'EVENT_RECEIVED', 200
+@app.route('/webhook', methods=['GET'])
+    VERIFY_TOKEN = '101185'
+    mode = request.args.get('hub.mode')
+    token = request.args.get('hub.verify_token')
+    challenge = request.args.get('hub.challenge')
+
+    if mode and token == VERIFY_TOKEN:
+        print("WEBHOOK VERIFIED")
+        return challenge, 200
+    else:
+        return '', 403
+
+
+# Step 2: Handle Events
+@app.route('/webhook', methods=['POST'])
+def handle_events():
+    body = request.json
+    print("Received Webhook:", json.dumps(body, indent=2))
+
+    # Handle different event types here
+
+    return '', 200
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))  # Use PORT env variable or default to 8080
